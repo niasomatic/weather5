@@ -11,21 +11,6 @@ function App() {
   const [loading, setLoading] = useState(true);
   const cities = ['Paris', 'New York', 'Fukuoka', 'Stockholm'];
 
-  const getCurrentLocation = useCallback(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        getWeatherByCurrentLocation(lat, lon);
-        console.log("Latitude:", lat, "Longitude:", lon);
-      },
-      (error) => {
-        console.error("Error getting location:", error.message);
-        setLoading(false); // Stop loader if there's an error
-      }
-    );
-  }, []);
-
   const getWeatherByCurrentLocation = useCallback(async (lat, lon) => {
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=cadc7b126e6864aac70695ad1720c09a&units=metric`;
@@ -39,6 +24,21 @@ function App() {
       setLoading(false); // Stop loader on error
     }
   }, []);
+
+  const getCurrentLocation = useCallback(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        getWeatherByCurrentLocation(lat, lon);
+        console.log("Latitude:", lat, "Longitude:", lon);
+      },
+      (error) => {
+        console.error("Error getting location:", error.message);
+        setLoading(false); // Stop loader if there's an error
+      }
+    );
+  }, [getWeatherByCurrentLocation]);
 
   const getWeatherByCity = useCallback(async () => {
     try {
