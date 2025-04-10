@@ -1,6 +1,6 @@
+import React, { useEffect, useState, useCallback } from 'react'; 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useEffect, useState } from 'react';
 import WeatherBox from './Component/WeatherBox';
 import WeatherButton from './Component/WeatherButton';
 import ClipLoader from "react-spinners/ClipLoader";
@@ -11,7 +11,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const cities = ['Paris', 'New York', 'Fukuoka', 'Stockholm'];
 
-  const getCurrentLocation = () => {
+  const getCurrentLocation = useCallback(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = position.coords.latitude;
@@ -24,9 +24,9 @@ function App() {
         setLoading(false); // Stop loader if there's an error
       }
     );
-  };
+  }, []);
 
-  const getWeatherByCurrentLocation = async (lat, lon) => {
+  const getWeatherByCurrentLocation = useCallback(async (lat, lon) => {
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=cadc7b126e6864aac70695ad1720c09a&units=metric`;
       const response = await fetch(url);
@@ -38,9 +38,9 @@ function App() {
       console.error("Error fetching weather data:", error.message);
       setLoading(false); // Stop loader on error
     }
-  };
+  }, []);
 
-  const getWeatherByCity = async () => {
+  const getWeatherByCity = useCallback(async () => {
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=cadc7b126e6864aac70695ad1720c09a&units=metric`;
       const response = await fetch(url);
@@ -52,7 +52,7 @@ function App() {
       console.error("Error fetching weather data:", error.message);
       setLoading(false); // Stop loader on error
     }
-  };
+  }, [city]);
 
   useEffect(() => {
     if (city === '') {
@@ -60,7 +60,7 @@ function App() {
     } else {
       getWeatherByCity();
     }
-  }, [city]);
+  }, [city, getCurrentLocation, getWeatherByCity]);
 
   return (
     <div>
