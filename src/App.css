@@ -1,0 +1,30 @@
+.no-points {
+  list-style-type: none;
+  
+  padding-left: 15px;
+  padding-top:300px;
+  padding-inline: 10px;
+  font-size: 30px;
+  text-align: center;
+}
+
+
+body {
+  background: url(https://img.freepik.com/free-photo/beautiful-dusk-light-colorful-beauty_1203-5706.jpg?semt=ais_hybrid) no-repeat center center;
+  height: 100vh;
+  background-size: cover;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height:100vh;
+  flex-direction:column;
+}
+
+.Weather-box {
+  border:3px solid white;
+  padding: 10px;
+  border-radius: 10px;
+}
